@@ -73,7 +73,7 @@ def book(rego):
             )
         elif 'confirm' in request.form:
             location = Location(request.form['start'], request.form['end'])
-            booking = system.make_booking(current_user, diff, car, location)
+            booking = system.make_booking(system.get_user_by_id(current_user.get_id()), diff, car, location)
             return render_template('booking_confirm.html', booking=booking)
     return render_template('booking_form.html', car=car)
 
