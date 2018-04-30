@@ -23,5 +23,4 @@ def bootstrap_system():
 
     for name in ["Matt", "Isaav", "Taylor"]:
         system.new_customer(Customer(name, 'pass', 1531))
-
     return system

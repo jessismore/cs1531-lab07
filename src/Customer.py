@@ -26,6 +26,9 @@ class User(UserMixin, ABC):
     def is_anonymous(self):
         return False
 
+    def name(self):
+        return self._username
+
     def get_id(self):
         """Required by Flask-login"""
         return str(self._id)

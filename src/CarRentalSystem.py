@@ -1,5 +1,5 @@
 from src.Booking import Booking
-
+from src.Car import *
 
 class CarRentalSystem:
     def __init__(self):
@@ -8,10 +8,11 @@ class CarRentalSystem:
         self._bookings = []
 
     def car_search(self, name=None, model=None):
-        """
-        You will have to implement this method for Task 2
-        """
-        pass
+        cars = []
+        for car in self._cars:
+            if car.get_name() == name and car.get_model() == model:
+                cars.append(car)
+        return cars
 
     def make_booking(self, customer, period, car, location):
         new_booking = Booking(customer, period, car, location)

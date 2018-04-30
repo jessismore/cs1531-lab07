@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% block body %}
 <h1>All Bookings</h1>
+{% for booking in bookings %}
+  <p> {{ booking }} </p>
+{% endfor %}
 {% endblock %}
-

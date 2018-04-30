@@ -1,9 +1,11 @@
-from flask import render_template, request, redirect, url_for, abort
+from flask import render_template, request, redirect, url_for, abort, flash
 from flask_login import current_user, login_required, login_user, logout_user
 from server import app, system
 from datetime import datetime
 from src.Location import Location
-
+from src.Customer import *
+from src.CarRentalSystem import *
+from src.client import *
 
 @app.route('/')
 def home():
@@ -12,9 +14,20 @@ def home():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    """
-    Task 1: complete this function
-    """
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        for name in ["Matt", "Isaav", "Taylor"]:
+            system.new_customer(Customer(name, 'pass', 1531))
+
+        if system.validate_login(username, password):
+            user = system.get_customer(username)
+            login_user(user)
+            flash('Logged in successfully.')
+
+            return redirect(url_for('cars'))
+        else:
+            return "Login Failed"
     return render_template('login.html')
 
 
@@ -31,13 +44,18 @@ def page_not_found(e=None):
     return render_template('404.html'), 404
 
 
-@app.route('/cars')
+@app.route('/cars', methods = ['GET', 'POST'])
 @login_required
 def cars():
     """
     Task 2: At the moment this endpoint does not do anything if a search
     is sent. It should filter the cars depending on the search criteria
     """
+    if request.method == 'POST':
+        name = request.form['make']
+        model = request.form['model']
+        cars = system.car_search(name, model)
+        return render_template('cars.html', cars=cars)
     cars = system.cars # This line is deleted in the model solution
     return render_template('cars.html', cars=cars)
 
@@ -86,4 +104,7 @@ def car_bookings(rego):
     the bookings associated with the car represented by 'rego'
     The bookings.html template is intended for this route
     """
-    pass
+    car = system.get_car(rego)
+    bookings = car.get_bookings()
+
+    return render_template('bookings.html', bookings = bookings)
