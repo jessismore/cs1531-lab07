@@ -10,7 +10,7 @@ class CarRentalSystem:
     def car_search(self, name=None, model=None):
         cars = []
         for car in self._cars:
-            if car.get_name() == name and car.get_model() == model:
+            if car.get_name() == name or car.get_model() == model:
                 cars.append(car)
         return cars
 
